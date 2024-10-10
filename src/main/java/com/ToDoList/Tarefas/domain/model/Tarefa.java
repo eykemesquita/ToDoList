@@ -1,11 +1,14 @@
 package com.ToDoList.Tarefas.domain.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.time.LocalDateTime;
 import jakarta.validation.constraints.NotNull;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 
 @Entity
@@ -15,7 +18,7 @@ import jakarta.validation.constraints.NotNull;
 @Builder
 @Getter
 @Setter
-@Table(name = "tarefa")
+@Table(name = "tarefas")
 public class Tarefa {
 
     @Id
@@ -33,15 +36,16 @@ public class Tarefa {
     private String descricao;
 
     @Enumerated(EnumType.STRING)
-    @NotNull(message = "Status não pode ser nulo")
     @Column(name = "status",nullable = false)
-    private TarefaStatus status;
+    private TarefaStatus status = TarefaStatus.A_FAZER; // valor padrão
 
-    @NotNull(message = "Data não pode ser nula")
-    @Column(name = "dataCriar",nullable = false)
+    //@NotBlank(message = "Data não pode ser nula")
+    @CreationTimestamp
+    @Column(name = "data_criar",nullable = false, updatable = false)
     private LocalDateTime dataCriar;
 
-    @Column(name = "dataAtualizacao")
+    @UpdateTimestamp
+    @Column(name = "data_atualizacao")
     private LocalDateTime dataAtualizacao;
 
 }

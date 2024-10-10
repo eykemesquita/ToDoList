@@ -1,5 +1,6 @@
 package com.ToDoList.Tarefas.domain.api;
 
+import com.ToDoList.Tarefas.domain.exception.NegocioException;
 import com.ToDoList.Tarefas.domain.model.Tarefa;
 import com.ToDoList.Tarefas.domain.repository.TarefaRepository;
 import com.ToDoList.Tarefas.domain.service.RegistroTarefaService;
@@ -37,6 +38,27 @@ public class TarefaController {
     @PostMapping
     public Tarefa adicionar(@RequestBody Tarefa tarefa){
         return registroTarefaService.salvar(tarefa);
+    }
+
+    @PutMapping("/{tarefaId}")
+    public ResponseEntity<Tarefa> atualizar(@PathVariable Long tarefaId, @RequestBody Tarefa tarefa){
+        try {
+            Tarefa tarefaAtualizada = registroTarefaService.atualizar(tarefaId, tarefa);
+            return ResponseEntity.ok(tarefaAtualizada);
+        } catch (NegocioException ex) {
+            return ResponseEntity.notFound().build();
+        }
+
+    }
+
+    @DeleteMapping("/{tarefaId}")
+    public ResponseEntity<Void> remover(@PathVariable Long tarefaId){
+        try {
+            registroTarefaService.remover(tarefaId);
+            return ResponseEntity.noContent().build();
+        } catch (NegocioException ex) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 }

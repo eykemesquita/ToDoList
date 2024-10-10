@@ -34,4 +34,24 @@ public class RegistroTarefaService {
         return tarefaRepository.findAll();
     }
 
+    public Tarefa atualizar(Long tarefaId, Tarefa tarefa){
+        if (!tarefaRepository.existsById(tarefaId)) {
+            throw new NegocioException("Tarefa não encontrada com o ID: " + tarefaId);
+        }
+
+        tarefa.setId(tarefaId);
+        tarefa.setTitulo(tarefa.getTitulo());
+        tarefa.setDescricao(tarefa.getDescricao());
+        tarefa.setStatus(tarefa.getStatus());
+        return tarefaRepository.save(tarefa);
+    }
+
+    public void remover(Long tarefaId){
+        if (!tarefaRepository.existsById(tarefaId)) {
+            throw new NegocioException("Tarefa não encontrada com o ID: " + tarefaId);
+        }
+        tarefaRepository.deleteById(tarefaId);
+    }
+
+
 }
